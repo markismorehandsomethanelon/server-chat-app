@@ -1,0 +1,1 @@
+Please use staruml application to open these diagrams
