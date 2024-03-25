@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface MessageNotificationService {
     ResponseDTO<MessageNotificationDTO> markAsRead(Long userId, Long messageId);
-    ResponseDTO<List<MessageNotificationDTO>> findUnreadMessagesByUserIdAndConversationId(Long userId, Long conversationId);
+    ResponseDTO<List<MessageNotificationDTO>> findUnreadMessagesByConversationIdAndUserId(Long conversationId, Long userId);
 
     ResponseDTO<Void> markAllAsRead(Long userId, Long conversationId);
 }

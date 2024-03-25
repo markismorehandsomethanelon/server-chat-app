@@ -24,7 +24,7 @@ public class MessageNotificationServiceImpl implements MessageNotificationServic
 
     @Override
     public ResponseDTO<MessageNotificationDTO> markAsRead(Long userId, Long messageId) {
-        Optional<MessageNotificationEntity> messageNotification = messageNotificationRepo.findByMessageIdAndUserId(userId, messageId);
+        Optional<MessageNotificationEntity> messageNotification = messageNotificationRepo.findByUserIdAndMessageId(userId, messageId);
 
         if (!messageNotification.isPresent()) {
             return ResponseDTO.<MessageNotificationDTO>builder()
@@ -56,7 +56,7 @@ public class MessageNotificationServiceImpl implements MessageNotificationServic
     }
 
     @Override
-    public ResponseDTO<List<MessageNotificationDTO>> findUnreadMessagesByUserIdAndConversationId(Long userId, Long conversationId) {
+    public ResponseDTO<List<MessageNotificationDTO>> findUnreadMessagesByConversationIdAndUserId(Long conversationId, Long userId) {
 
         List< MessageNotificationEntity> messageNotificationEntities = this.messageNotificationRepo.findUnreadMessagesByUserIdAndConversationId(userId, conversationId);
         List<MessageNotificationDTO> messageNotificationDTOS = messageNotificationEntities.stream()

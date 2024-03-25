@@ -38,8 +38,8 @@ public class MessageNotificationController {
     }
 
 
-    @GetMapping("/user/{userId}/conversation/{conversationId}")
-    public ResponseEntity<ResponseDTO<List<MessageNotificationDTO>>> findUnreadMessagesByUserIdAndConversationId(@DestinationVariable Long userId, @DestinationVariable Long conversationId) {
-        return ResponseEntity.ok(this.messageNotificationService.findUnreadMessagesByUserIdAndConversationId(userId, conversationId));
+    @GetMapping("/conversations/{conversationId}/unreadMessages/user/{userId}")
+    public ResponseEntity<ResponseDTO<List<MessageNotificationDTO>>> findUnreadMessagesByUserIdAndConversationId(@DestinationVariable Long conversationId, @DestinationVariable Long userId) {
+        return ResponseEntity.ok(this.messageNotificationService.findUnreadMessagesByConversationIdAndUserId(conversationId, userId));
     }
 }

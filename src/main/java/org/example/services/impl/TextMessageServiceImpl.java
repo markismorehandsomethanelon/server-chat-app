@@ -75,19 +75,17 @@ public class TextMessageServiceImpl implements TextMessageService {
             textMessageEntity.setConversation(conversation);
             textMessageEntity.setSender(userWrapper.get());
 
-            TextMessageEntity finalTextMessageEntity = textMessageEntity;
-//            conversation.getMembers().forEach(member -> {
-//                MessageNotificationEntity messageNotificationEntity = MessageNotificationEntity.builder()
-//                        .message(finalTextMessageEntity)
-//                        .user(member)
-//                        .read(false)
-//                        .build();
-//
-//                finalTextMessageEntity.getNotifications().add(messageNotificationEntity);
-//            });
-
             textMessageEntity = messageRepo.save(textMessageEntity);
 
+            TextMessageEntity finalTextMessageEntity = textMessageEntity;
+            conversation.getMembers().forEach(member -> {
+                MessageNotificationEntity messageNotificationEntity = MessageNotificationEntity.builder()
+                        .message(finalTextMessageEntity)
+                        .user(member)
+                        .read(false)
+                        .build();
+                messageNotificationRepo.save(messageNotificationEntity);
+            });
             return ResponseDTO.<TextMessageDTO>builder()
                     .success(true)
                     .data(textMessageMapper.convertToDTO(textMessageEntity))

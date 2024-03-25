@@ -20,6 +20,6 @@ public interface MessageNotificationRepository extends JpaRepository<MessageNoti
     @Query("SELECT m FROM MessageNotificationEntity m WHERE m.read = false AND m.user.id = :userId AND m.message.conversation.id = :conversationId")
     List<MessageNotificationEntity> findUnreadMessagesByUserIdAndConversationId(@Param("userId") Long userId, @Param("conversationId") Long conversationId);
 
-    @Query("SELECT m FROM MessageNotificationEntity m WHERE m.message.id = :messageId AND m.user.id = :userId")
-    Optional<MessageNotificationEntity> findByMessageIdAndUserId(@Param("messageId") Long messageId, @Param("userId") Long userId);
+    @Query("SELECT m FROM MessageNotificationEntity m WHERE m.user.id = :userId AND m.message.id = :messageId")
+    Optional<MessageNotificationEntity> findByUserIdAndMessageId(@Param("userId") Long userId, @Param("messageId") Long messageId);
 }

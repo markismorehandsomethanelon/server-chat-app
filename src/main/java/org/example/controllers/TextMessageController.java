@@ -28,15 +28,7 @@ public class TextMessageController {
 
         ResponseDTO<TextMessageDTO> res = textMessageService.create(conversationId, textMessageDTO);
 
-//        if (!res.isSuccess()){
-            messagingTemplate.convertAndSend(destination, res);
-//            return;
-//        }
-
-//        res.getData().forEach(messageNotificationDTO -> {
-//            String destination = String.format("/private/user/%s/conversations/%s/messages", messageNotificationDTO.getUser().getId(), conversationId);
-//            messagingTemplate.convertAndSend(destination, messageNotificationDTO);
-//        });
+        messagingTemplate.convertAndSend(destination, res);
     }
 
 }
