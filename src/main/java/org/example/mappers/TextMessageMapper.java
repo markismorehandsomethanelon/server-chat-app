@@ -31,12 +31,6 @@ public class TextMessageMapper {
             textMessageEntity.setSender(userMapper.convertToEntity(textMessageDTO.getSender()));
         }
 
-        if (textMessageDTO.getNotifications() != null) {
-            textMessageEntity.setNotifications(textMessageDTO.getNotifications().stream()
-                    .map(messageNotificationDTO -> messageNotificationMapper.toEntity(messageNotificationDTO))
-                    .collect(Collectors.toList()));
-        }
-
         return textMessageEntity;
     }
 
@@ -46,12 +40,6 @@ public class TextMessageMapper {
 
         if (textMessageEntity.getSender() != null) {
             textMessageDTO.setSender(userMapper.convertToDTO(textMessageEntity.getSender()));
-        }
-
-        if (textMessageEntity.getNotifications() != null) {
-            textMessageDTO.setNotifications(textMessageEntity.getNotifications().stream()
-                    .map(messageNotificationEntity -> messageNotificationMapper.toDTO(messageNotificationEntity))
-                    .collect(Collectors.toList()));
         }
 
         textMessageDTO.setInstanceOf("TEXT");

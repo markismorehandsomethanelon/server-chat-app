@@ -29,5 +29,4 @@ public class MessageDTO {
     private UserDTO sender;
     private Long conversationId;
     private String instanceOf;
-    private List<MessageNotificationDTO> notifications;
 }

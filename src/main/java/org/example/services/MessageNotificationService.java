@@ -6,6 +6,8 @@ import org.example.dtos.ResponseDTO;
 import java.util.List;
 
 public interface MessageNotificationService {
-    ResponseDTO<Void> markAsRead(Long userId, Long messageId);
+    ResponseDTO<MessageNotificationDTO> markAsRead(Long userId, Long messageId);
     ResponseDTO<List<MessageNotificationDTO>> findUnreadMessagesByUserIdAndConversationId(Long userId, Long conversationId);
+
+    ResponseDTO<Void> markAllAsRead(Long userId, Long conversationId);
 }

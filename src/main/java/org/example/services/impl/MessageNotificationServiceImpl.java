@@ -23,11 +23,11 @@ public class MessageNotificationServiceImpl implements MessageNotificationServic
     private MessageNotificationMapper messageNotificationMapper;
 
     @Override
-    public ResponseDTO<Void> markAsRead(Long userId, Long messageId) {
+    public ResponseDTO<MessageNotificationDTO> markAsRead(Long userId, Long messageId) {
         Optional<MessageNotificationEntity> messageNotification = messageNotificationRepo.findByMessageIdAndUserId(userId, messageId);
 
         if (!messageNotification.isPresent()) {
-            return ResponseDTO.<Void>builder()
+            return ResponseDTO.<MessageNotificationDTO>builder()
                     .success(false)
                     .message("Message notification not found").build();
         }
@@ -35,6 +35,20 @@ public class MessageNotificationServiceImpl implements MessageNotificationServic
         MessageNotificationEntity messageNotificationEntity = messageNotification.get();
         messageNotificationEntity.setRead(true);
         messageNotificationRepo.save(messageNotificationEntity);
+
+        return ResponseDTO.<MessageNotificationDTO>builder()
+                .success(true)
+                .data(messageNotificationMapper.toDTO(messageNotificationEntity))
+                .build();
+    }
+
+    @Override
+    public ResponseDTO<Void> markAllAsRead(Long userId, Long conversationId) {
+        List<MessageNotificationEntity> messageNotifications = messageNotificationRepo.findUnreadMessagesByUserIdAndConversationId(userId, conversationId);
+        messageNotifications.forEach(messageNotificationEntity -> {
+            messageNotificationEntity.setRead(true);
+            messageNotificationRepo.save(messageNotificationEntity);
+        });
 
         return ResponseDTO.<Void>builder()
                 .success(true)
@@ -53,4 +67,6 @@ public class MessageNotificationServiceImpl implements MessageNotificationServic
                 .data(messageNotificationDTOS)
                 .build();
     }
+
+
 }

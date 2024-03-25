@@ -25,8 +25,15 @@ public class MessageNotificationController {
     private MessageNotificationService messageNotificationService;
     @MessageMapping("/user/{userId}/message/{messageId}/messageNotifications/markAsRead")
     public void markAsRead(@DestinationVariable Long userId, @DestinationVariable Long messageId) {
-        String destination = String.format("/private/user/%s/messageNotifications", userId);
-        ResponseDTO<Void> res = this.messageNotificationService.markAsRead(userId, messageId);
+        String destination = String.format("/private/user/%s/messageNotifications/markAsRead", userId);
+        ResponseDTO<MessageNotificationDTO> res = this.messageNotificationService.markAsRead(userId, messageId);
+        messagingTemplate.convertAndSend(destination, res);
+    }
+
+    @MessageMapping("/user/{userId}/conversation/{conversationId}/messageNotifications/markAllAsRead")
+    public void markAllAsRead(@DestinationVariable Long userId, @DestinationVariable Long conversationId) {
+        String destination = String.format("/private/user/%s/messageNotifications/markAllAsRead", userId);
+        ResponseDTO<Void> res = this.messageNotificationService.markAllAsRead(userId, conversationId);
         messagingTemplate.convertAndSend(destination, res);
     }
 
