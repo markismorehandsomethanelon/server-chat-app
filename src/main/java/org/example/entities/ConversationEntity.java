@@ -34,6 +34,4 @@ public class ConversationEntity {
             joinColumns = @JoinColumn(name = "conversation_id"),
             inverseJoinColumns = @JoinColumn(name = "member_id"))
     private List<UserEntity> members;
-
-    private int numberOfUnreadMessages;
 }

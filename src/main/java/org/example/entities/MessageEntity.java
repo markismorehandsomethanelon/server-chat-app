@@ -34,7 +34,4 @@ public class MessageEntity {
     @ManyToOne
     @JoinColumn(name = "conversation_id")
     private ConversationEntity conversation;
-
-    @OneToMany(mappedBy = "message", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
-    private List<MessageNotificationEntity> notifications;
 }

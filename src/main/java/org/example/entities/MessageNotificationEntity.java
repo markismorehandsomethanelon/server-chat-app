@@ -18,12 +18,11 @@ public class MessageNotificationEntity {
     @Column(name = "is_read")
     private Boolean read;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "user_id")
     private UserEntity user;
 
     @ManyToOne
     @JoinColumn(name = "message_id")
     private MessageEntity message;
-
 }

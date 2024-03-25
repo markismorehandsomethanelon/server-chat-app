@@ -17,6 +17,9 @@ public class UserMapper {
     private ModelMapper modelMapper;
 
     @Autowired
+    private MessageNotificationMapper messageNotificationMapper;
+
+    @Autowired
     private FileUtil fileUtil;
 
     public UserEntity convertToEntity(UserDTO userDTO) {
@@ -26,6 +29,13 @@ public class UserMapper {
                     .map(conversationId -> ConversationEntity.builder().id(conversationId).build())
                     .collect(Collectors.toList()));
         }
+
+        if (userDTO.getMessageNotifications() != null) {
+            userEntity.setMessageNotifications(userDTO.getMessageNotifications().stream()
+                    .map(messageNotificationDTO -> messageNotificationMapper.toEntity(messageNotificationDTO))
+                    .collect(Collectors.toList()));
+        }
+
         return userEntity;
     }
 
@@ -36,6 +46,13 @@ public class UserMapper {
                     .map(ConversationEntity::getId)
                     .collect(Collectors.toList()));
         }
+
+        if (userEntity.getMessageNotifications() != null) {
+            userDTO.setMessageNotifications(userEntity.getMessageNotifications().stream()
+                    .map(messageNotificationEntity -> messageNotificationMapper.toDTO(messageNotificationEntity))
+                    .collect(Collectors.toList()));
+        }
+
         userDTO.setAvatarFile(fileUtil.getFile(userEntity.getAvatarCode()));
 
         return userDTO;

@@ -1,6 +1,7 @@
 package org.example.dtos;
 
 import lombok.*;
+import org.example.entities.MessageNotificationEntity;
 import org.example.entities.UserEntity;
 
 import java.util.List;
@@ -20,4 +21,6 @@ public class UserDTO {
     private FileDataDTO avatarFile;
 
     private List<Long> conversationIds;
+
+    private List<MessageNotificationDTO> messageNotifications;
 }

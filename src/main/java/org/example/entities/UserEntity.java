@@ -24,6 +24,9 @@ public class UserEntity {
 
     private String avatarCode;
 
-    @ManyToMany(mappedBy = "members", cascade = {CascadeType.REMOVE}, fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "members", cascade = {CascadeType.REMOVE})
     private List<ConversationEntity> conversations;
+
+    @OneToMany(mappedBy = "user", cascade = {CascadeType.REMOVE})
+    private List<MessageNotificationEntity> messageNotifications;
 }

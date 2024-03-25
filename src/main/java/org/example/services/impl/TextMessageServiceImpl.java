@@ -76,15 +76,15 @@ public class TextMessageServiceImpl implements TextMessageService {
             textMessageEntity.setSender(userWrapper.get());
 
             TextMessageEntity finalTextMessageEntity = textMessageEntity;
-            conversation.getMembers().forEach(member -> {
-                MessageNotificationEntity messageNotificationEntity = MessageNotificationEntity.builder()
-                        .message(finalTextMessageEntity)
-                        .user(member)
-                        .read(false)
-                        .build();
-
-                finalTextMessageEntity.getNotifications().add(messageNotificationEntity);
-            });
+//            conversation.getMembers().forEach(member -> {
+//                MessageNotificationEntity messageNotificationEntity = MessageNotificationEntity.builder()
+//                        .message(finalTextMessageEntity)
+//                        .user(member)
+//                        .read(false)
+//                        .build();
+//
+//                finalTextMessageEntity.getNotifications().add(messageNotificationEntity);
+//            });
 
             textMessageEntity = messageRepo.save(textMessageEntity);
 
