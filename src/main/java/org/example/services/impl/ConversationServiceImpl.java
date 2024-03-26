@@ -76,6 +76,7 @@ public class ConversationServiceImpl implements ConversationService {
                 })
                 .collect(Collectors.toList());
         return ResponseDTO.<List<ConversationDTO>> builder()
+                .success(true)
                 .data(conversationDTOList)
                 .build();
     }
@@ -104,121 +105,5 @@ public class ConversationServiceImpl implements ConversationService {
                 .success(true)
                 .data(conversationDTO)
                 .build();
-    }
-
-    @Override
-    public ResponseDTO<ConversationDTO> joinGroupConversation(JoinGroupConversationRequest request) {
-        Long conversationId;
-        try {
-            conversationId = Long.valueOf(request.getConversationLink().split("/")[1]);
-
-        } catch (Exception e) {
-            return ResponseDTO.<ConversationDTO>builder()
-                    .success(false)
-                    .message("Conversation does not exist")
-                    .build();
-        }
-        Optional<GroupConversationEntity> conversationWrapper = groupConversationRepo.findById(conversationId);
-
-        if (!conversationWrapper.isPresent()) {
-            return ResponseDTO.<ConversationDTO>builder()
-                    .success(false)
-                    .message("Cannot find conversation")
-                    .build();
-        }
-
-        Optional<UserEntity> userWrapper = userRepo.findById(request.getJoinerId());
-
-        if (!userWrapper.isPresent()) {
-            return ResponseDTO.<ConversationDTO>builder()
-                    .success(false)
-                    .message("Cannot find user")
-                    .build();
-        }
-
-        if (conversationRepo.existsByIdAndMembersContaining(conversationId, userWrapper.get())) {
-            return ResponseDTO.<ConversationDTO>builder()
-                    .success(false)
-                    .message("User is already exist")
-                    .build();
-        }
-
-        try {
-            GroupConversationEntity groupConversationEntity = conversationWrapper.get();
-            groupConversationEntity.getMembers().add(userWrapper.get());
-
-            groupConversationEntity = conversationRepo.save(groupConversationEntity);
-
-            return ResponseDTO.<ConversationDTO>builder()
-                    .success(true)
-                    .data(groupConversationMapper.convertToDTO(groupConversationEntity))
-                    .build();
-
-        } catch (Exception e) {
-            return ResponseDTO.<ConversationDTO>builder()
-                    .success(false)
-                    .message("Error")
-                    .build();
-        }
-    }
-
-    @Override
-    public ResponseDTO<ConversationDTO> leaveGroupConversation(LeaveGroupConversationRequest request) {
-        Optional<ConversationEntity> conversationWrapper = conversationRepo.findById(request.getConversationId());
-
-        if (!conversationWrapper.isPresent()) {
-            return ResponseDTO.<ConversationDTO>builder()
-                    .success(false)
-                    .message("Conversation does not exist")
-                    .build();
-        }
-
-        Optional<UserEntity> userWrapper = userRepo.findById(request.getLeaverId());
-
-        if (!userWrapper.isPresent()) {
-            return ResponseDTO.<ConversationDTO>builder()
-                    .success(false)
-                    .message("User does not exist")
-                    .build();
-        }
-
-        if (!conversationRepo.existsByIdAndMembersContaining(request.getConversationId(), userWrapper.get())) {
-            return ResponseDTO.<ConversationDTO>builder()
-                    .success(false)
-                    .message("User does not exist")
-                    .build();
-        }
-
-        try {
-            ConversationEntity conversationEntity = conversationWrapper.get();
-            GroupConversationEntity groupConversationEntity = modelMapper.map(conversationEntity, GroupConversationEntity.class);
-
-            if (groupConversationEntity.getOwnedBy().equals(userWrapper.get())) {
-
-                groupConversationEntity.getMembers().forEach(member -> member.getConversations().remove(conversationEntity));
-
-                conversationRepo.delete(groupConversationEntity);
-
-                return ResponseDTO.<ConversationDTO>builder()
-                        .success(true)
-                        .data(groupConversationMapper.convertToDTO(groupConversationEntity))
-                        .build();
-            }
-
-            groupConversationEntity.getMembers().remove(userWrapper.get());
-
-            groupConversationEntity = conversationRepo.save(groupConversationEntity);
-
-            return ResponseDTO.<ConversationDTO>builder()
-                    .success(true)
-                    .data(groupConversationMapper.convertToDTO(groupConversationEntity))
-                    .build();
-
-        } catch (Exception e) {
-            return ResponseDTO.<ConversationDTO>builder()
-                    .success(false)
-                    .message("Error")
-                    .build();
-        }
     }
 }

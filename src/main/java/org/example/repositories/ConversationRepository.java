@@ -16,11 +16,9 @@ public interface ConversationRepository extends JpaRepository<ConversationEntity
     @Query("SELECT c FROM ConversationEntity c JOIN c.members m WHERE m.id = :userId")
     List<ConversationEntity> findByUserId(@Param("userId") Long userId);
 
-    boolean existsByIdAndMembersContaining(Long conversationId, UserEntity user);
-
-    @Query("SELECT c FROM ConversationEntity c " +
-            "JOIN c.members m" +
-            " WHERE m IN :members")
-    Optional<ConversationEntity> findFirstByMembers(@Param("members") List<UserEntity> members);
+//    @Query("SELECT c FROM ConversationEntity c " +
+//            "JOIN c.members m" +
+//            " WHERE m IN :members")
+//    Optional<ConversationEntity> findFirstByMembers(@Param("members") List<UserEntity> members);
 
 }

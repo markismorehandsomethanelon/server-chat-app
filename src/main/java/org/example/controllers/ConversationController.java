@@ -40,22 +40,6 @@ public class ConversationController {
         return ResponseEntity.ok().body(conversationService.findById(id));
     }
 
-    @PostMapping("/conversations/members")
-    public ResponseEntity<ResponseDTO<ConversationDTO>> joinGroupConversation(@RequestBody JoinGroupConversationRequest request){
-        ResponseDTO<ConversationDTO> res = conversationService.joinGroupConversation(request);
-        if (res.isSuccess()){
-            return ResponseEntity.ok(res);
-        }
-        return ResponseEntity.badRequest().body(res);
-    }
 
-    @DeleteMapping("/conversations/members")
-    public ResponseEntity<ResponseDTO<ConversationDTO>> leaveGroupConversation(@RequestBody LeaveGroupConversationRequest request){
-        ResponseDTO<ConversationDTO> res = conversationService.leaveGroupConversation(request);
-        if (res.isSuccess()){
-            return ResponseEntity.ok(res);
-        }
-        return ResponseEntity.badRequest().body(res);
-    }
 
 }

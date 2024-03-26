@@ -15,8 +15,4 @@ public interface ConversationService {
     ResponseDTO<List<ConversationDTO>> findByMemberId(Long memberId);
 
     ResponseDTO<ConversationDTO> findById(Long id);
-
-    ResponseDTO<ConversationDTO> joinGroupConversation(JoinGroupConversationRequest request);
-
-    ResponseDTO<ConversationDTO> leaveGroupConversation(LeaveGroupConversationRequest request);
 }

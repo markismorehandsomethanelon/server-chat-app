@@ -11,7 +11,6 @@ import org.example.repositories.AccountRepository;
 import org.example.repositories.UserRepository;
 import org.example.requests.ChangePasswordRequest;
 import org.example.services.AccountService;
-import org.example.services.FileStorageService;
 import org.example.utils.FileUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -31,9 +30,6 @@ public class AccountServiceImpl implements AccountService {
 
     @Value("${default.user.avatar.code}")
     private String defaultUserAvatarCode;
-
-    @Autowired
-    private FileStorageService fileStorageService;
 
     @Autowired
     private AccountRepository accountRepo;
